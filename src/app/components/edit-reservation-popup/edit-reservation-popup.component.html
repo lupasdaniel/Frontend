@@ -1,0 +1,28 @@
+<p-dialog header="Rezervare Masă" [(visible)]="visible" [modal]="true" [closable]="true" (onHide)="close.emit()">
+  <p>Rezervi masa {{ table.tableNumber }} pentru data de {{ formatDate(reservationDate) }} și ora de {{ formatTime(reservationHour) }}?</p>
+  
+  <div class="fields-inline">
+    <div class="field">
+      <label for="nrOfPersons" class="custom-label">Nr pers.</label>
+      <p-dropdown 
+        [options]="nrOfPersonsOptions" 
+        [(ngModel)]="nrOfPersons" 
+        inputId="nrOfPersons"
+        class="custom-dropdown"
+        [showClear]="false">
+      </p-dropdown>
+
+    </div>
+    
+    <div class="field">
+      <label for="duration" class="custom-label">Durata</label>
+      <input type="text" [value]="duration" readonly id="duration" class="custom-input" />
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button pButton label="Anulează" class="p-button-secondary custom-button" (click)="onCancel()"></button>
+    <button pButton label="Rezervă" class="p-button-success custom-button" (click)="onReserve()" [disabled]="!nrOfPersons"></button>
+  </div>
+</p-dialog>
+

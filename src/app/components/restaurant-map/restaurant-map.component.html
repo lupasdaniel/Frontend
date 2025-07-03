@@ -1,0 +1,138 @@
+<p-toast></p-toast>
+
+<p-overlayPanel #overlayPanel>
+  <div style="font-size: 1rem; padding: 0.5rem;">
+    Capacitate: {{ hoveredTable?.personsNr ?? 'N/A' }} persoane
+  </div>
+</p-overlayPanel>
+
+<div class="controls z-10 relative">
+  <button
+    pButton
+    label="Salvează"
+    (click)="savePositions()"
+    icon="pi pi-save"
+    class="custom-btn-save"
+  ></button>
+
+  <button
+    pButton
+    label="Editare"
+    (click)="enableEdit()"
+    icon="pi pi-pencil"
+    class="custom-btn-edit"
+  ></button>
+
+  <button
+    pButton
+    label="Adaugă masă"
+    icon="pi pi-plus"
+    class="custom-btn-add"
+    (click)="addNewTable()"
+  ></button>
+
+  <app-add-map
+    [roomId]="roomId"
+    (tablesDetected)="onTablesDetected($event)"
+  ></app-add-map>
+
+  <div class="right-filters">
+    <div class="datepicker-filter">
+      <label for="buttondisplay" class="font-bold block mb-2">
+        Selectează data
+      </label>
+      <p-datepicker
+        [(ngModel)]="selectedDate"
+        [showIcon]="true"
+        inputId="buttondisplay"
+        [showOnFocus]="false"
+        (ngModelChange)="validateDateTime()"
+      ></p-datepicker>
+      <div *ngIf="dateError" class="error-message">{{ dateError }}</div>
+    </div>
+
+    <div class="datepicker-filter">
+      <label for="templatedisplay" class="font-bold block mb-2">
+        Selectează ora
+      </label>
+      <p-datepicker
+        [(ngModel)]="selectedHour"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        [timeOnly]="true"
+        [stepMinute]="15"
+        inputId="templatedisplay"
+        (ngModelChange)="validateDateTime()"
+      >
+        <ng-template #inputicon let-clickCallBack="clickCallBack">
+          <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+        </ng-template>
+      </p-datepicker>
+      <div *ngIf="timeError" class="error-message">{{ timeError }}</div>
+    </div>
+
+    <div class="apply-filter-btn mt-3">
+      <button
+        pButton
+        label="Aplică filtre"
+        icon="pi pi-filter"
+        class="p-button-success"
+        (click)="applyFilters()"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<div class="room-container" (click)="onMapClick($event)">
+  <div
+    *ngFor="let table of tables"
+    class="table"
+    [ngClass]="{
+      available: !table.isReserved,
+      reserved: table.isReserved
+    }"
+    [ngStyle]="{ left: table.x + 'px', top: table.y + 'px' }"
+    (click)="selectTable(table.id, $event)"
+    (mouseenter)="showOverlay($event, table)"
+    (mouseleave)="overlayPanel.hide()"
+  >
+    {{ table.tableNumber }}
+  </div>
+
+  <app-reservation-popup
+    *ngIf="reservationPopupVisible && selectedTable"
+    [table]="selectedTable"
+    [userId]="user.id"
+    [reservationHour]="selectedHour"
+    [reservationDate]="selectedDate"
+    (close)="reservationPopupVisible = false"
+    (reserve)="reserveTable($event)"
+  ></app-reservation-popup>
+</div>
+<p-dialog
+  header="Masa {{ selectedTable?.tableNumber }}"
+  [(visible)]="editTableDialogVisible"
+  [modal]="false"
+  [style]="{ width: '300px' }"
+  position="right"
+  [dismissableMask]="true"
+  styleClass="custom-dialog"
+>
+  <div class="p-fluid">
+    <label for="personsNr">Număr persoane</label>
+    <input
+      id="personsNr"
+      type="number"
+      [(ngModel)]="editedPersonsNr"
+      class="p-inputtext p-component"
+      min="1"
+    />
+    <button
+      pButton
+      label="Salvează"
+      icon="pi pi-check"
+      class="mt-3"
+      (click)="saveEditedTablePersonsNr()"
+    ></button>
+  </div>
+</p-dialog>

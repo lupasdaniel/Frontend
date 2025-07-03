@@ -1,0 +1,47 @@
+<div class="signin-container">
+  <p-card header="Înregistrare" class="signin-card">
+    <div class="signin-form">
+      <div class="form-group">
+        <label for="firstName">Prenume</label>
+        <input id="firstName" type="text" pInputText [(ngModel)]="user.firstName" placeholder="Prenume" />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Nume</label>
+        <input id="lastName" type="text" pInputText [(ngModel)]="user.lastName" placeholder="Nume" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half-width">
+          <label for="userName">Username</label>
+          <input id="userName" type="text" pInputText [(ngModel)]="user.userName" placeholder="Alege un username" />
+        </div>
+
+        <div class="form-group half-width">
+          <label for="phone">Număr de telefon</label>
+          <input id="phone" type="tel" pInputText [(ngModel)]="user.phoneNumber" placeholder="07xx xxx xxx" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" pInputText [(ngModel)]="user.email" placeholder="Introdu adresa de email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Parolă</label>
+        <input id="password" type="password" pInputText [(ngModel)]="user.password" placeholder="Alege o parolă" />
+      </div>
+
+      <div class="signin-buttons">
+        <button pButton type="button" label="Înregistrează-te" (click)="onSignup()" class="signin-btn"></button>
+      </div>
+    </div>
+  <div *ngIf="errors.length > 0" class="alert alert-danger">
+  <ul>
+    <li *ngFor="let error of errors">{{ error }}</li>
+  </ul>
+</div>
+
+  </p-card>
+</div>

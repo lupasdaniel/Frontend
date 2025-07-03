@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="left-column">
+    <h2>Editează Profilul</h2>
+    <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="firstName">Prenume</label>
+        <input id="firstName" formControlName="firstName" type="text" />
+        <div *ngIf="editUserForm.get('firstName')?.invalid && editUserForm.get('firstName')?.touched" class="error">
+          Prenumele este obligatoriu.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Nume</label>
+        <input id="lastName" formControlName="lastName" type="text" />
+        <div *ngIf="editUserForm.get('lastName')?.invalid && editUserForm.get('lastName')?.touched" class="error">
+          Numele este obligatoriu.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="userName">Nume Utilizator</label>
+        <input id="userName" formControlName="userName" type="text" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" type="email" readonly />
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">Număr de Telefon</label>
+        <input id="phoneNumber" formControlName="phoneNumber" type="tel" />
+      </div>
+
+      <button type="submit" [disabled]="editUserForm.invalid">Salvează</button>
+    </form>
+  </div>
+
+<div class="right-column">
+  <h2>Rezervările tale</h2>
+  <ul class="reservations-list">
+    <li *ngFor="let res of reservations" class="reservation-item">
+      <div class="reservation-details">
+        <div><strong>Data:</strong> {{ formatDateForQuery(res.date) }}</div>
+        <div><strong>Ora:</strong> {{ formatTimeForQuery(res.startTime) }}</div>
+        <div><strong>Masa:</strong> {{ res.tableNr }}</div>
+        <div><strong>Persoane:</strong> {{ res.nrOfPersons }}</div>
+        <div><strong>Camera:</strong> {{ res.roomName }}</div>
+      </div>
+      <button (click)="openConfirmDialog(res.id)" class="btn-cancel">Anulează</button>
+    </li>
+    <li *ngIf="reservations.length === 0">Nu ai rezervări active.</li>
+  </ul>
+  <div *ngIf="showConfirm" class="confirm-dialog-backdrop">
+    <div class="confirm-dialog">
+      <p>Ești sigur că vrei să anulezi această rezervare?</p>
+      <div class="dialog-buttons">
+        <button class="btn-confirm" (click)="confirmCancel()">Da</button>
+        <button class="btn-cancel-dialog" (click)="closeConfirmDialog()">Nu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>

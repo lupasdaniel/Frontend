@@ -1,0 +1,106 @@
+<div class="users-list-container">
+  <h2>Utilizatori</h2>
+
+  <div class="filter-container">
+    <form class="filter-form filter-flex" (ngSubmit)="$event.preventDefault()">
+      <div class="filter-box">
+        <input id="filterName" type="text" pInputText [(ngModel)]="filters.userName" name="filterName" placeholder="Nume utilizator" />
+      </div>
+      <div class="filter-box">
+        <input id="filterEmail" type="text" pInputText [(ngModel)]="filters.email" name="filterEmail" placeholder="Email" />
+      </div>
+      <div class="filter-box">
+        <label for="filterActive">Activ:</label>
+        <p-checkbox [(ngModel)]="filters.isActiv" binary="true" name="filterActive" inputId="filterActive" ></p-checkbox>
+      </div>
+      <div class="filter-box">
+      <p-dropdown
+          [options]="roles"
+          [(ngModel)]="filters!.role"
+          name="role"
+          placeholder="Selectează rolul"
+        >
+      </p-dropdown>
+    </div>
+    <div class="apply-filter-btn mt-3">
+      <button
+        pButton
+        label="Aplică filtre"
+        icon="pi pi-filter"
+        class="p-button-success"
+        (click)="loadUsers()"
+      ></button>
+      <button
+        pButton
+        label="Resetează filtre"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="resetFilters()"
+      ></button>
+    </div>
+    </form>
+  </div>
+
+  <p-table [value]="users" [paginator]="true" [rows]="5" [responsive]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nume complet</th>
+        <th>Nume utilizator</th>
+        <th>Email</th>
+        <th>Număr de telefon</th>
+        <th>Rol</th>
+        <th>Activ</th>
+        <th>Acțiuni</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.fullName }}</td>
+        <td>{{ user.userName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.isActive ? 'Activ' : 'Inactiv' }}</td>
+        <td>
+          <button class="btn-cancel" (click)="editUserInit(user.id)">Editează</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog header="Editează utilizator" [(visible)]="editDialogVisible" [modal]="true" [style]="{ width: '400px' }" [closable]="false">
+  <div *ngIf="editUser">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="firstName">Prenume</label>
+        <input id="firstName" pInputText [(ngModel)]="editUser!.firstName" name="firstName" />
+      </div>
+      <div class="p-field">
+        <label for="lastName">Nume</label>
+        <input id="lastName" pInputText [(ngModel)]="editUser!.lastName" name="lastName" />
+      </div>
+      <div class="p-field">
+        <label for="phoneNumber">Număr de telefon</label>
+        <input id="phoneNumber" pInputText [(ngModel)]="editUser!.phoneNumber" name="phoneNumber" />
+      </div>
+      <div class="p-field">
+        <label for="role">Rol</label>
+        <p-dropdown
+          [options]="roles"
+          [(ngModel)]="editUser!.role"
+          name="role"
+          placeholder="Selectează rolul"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="p-dialog-footer" style="text-align: right; margin-top: 1rem;">
+      <button pButton type="button" label="Salvează" class="p-button-success" (click)="saveEditedUser()"
+        [disabled]="!editUser!.firstName || !editUser!.lastName || !editUser!.phoneNumber"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="editDialogVisible = false"></button>
+    </div>
+  </div>
+</p-dialog>
+

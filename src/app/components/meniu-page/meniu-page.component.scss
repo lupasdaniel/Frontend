@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.filter-panel {
+  margin-bottom: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  min-width: 250px;
+  flex: 1 1 300px;
+}
+
+.category-section {
+  margin-bottom: 2.5rem;
+}
+
+.category-section h2 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 0.25rem;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.food-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.food-card {
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+  border-radius: 8px;
+}
+
+.food-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.allergens {
+  margin-top: 0.75rem;
+}
+
+.allergen-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  color: #e53935; /* red for allergen icons */
+  cursor: help;
+}

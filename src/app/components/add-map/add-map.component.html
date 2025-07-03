@@ -1,0 +1,15 @@
+<button
+  pButton
+  label="Adaugă hartă"
+  icon="pi pi-image"
+  (click)="openFileDialog()"
+  class="custom-btn-map"
+></button>
+
+<input
+  type="file"
+  accept="image/*"
+  #mapInput
+  hidden
+  (change)="onMapImageSelected($event)"
+/>

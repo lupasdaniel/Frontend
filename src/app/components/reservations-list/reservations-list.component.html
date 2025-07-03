@@ -1,0 +1,91 @@
+<div class="filter-container">
+  <form class="filter-form filter-flex" (ngSubmit)="$event.preventDefault()">
+    <div class="filter-box">
+      <p-datePicker
+        [(ngModel)]="filters.date"
+        placeholder="Data"
+        name="filterDate"
+        showIcon="true"
+        dateFormat="yy-mm-dd"
+        appendTo="body">
+      </p-datePicker>
+    </div>
+    <div class="filter-box">
+      <p-calendar
+        [(ngModel)]="filters.time"
+        name="filterTime"
+        placeholder="Ora"
+        timeOnly="true"
+        hourFormat="24"
+        showIcon="true"
+        appendTo="body">
+    </p-calendar>
+    </div>
+    <div class="filter-box">
+      <input
+        type="text"
+        pInputText
+        placeholder="Nume cameră"
+        [(ngModel)]="filters.roomName"
+        name="filterRoomName" />
+    </div>
+    <button
+        pButton
+        label="Aplică filtre"
+        icon="pi pi-filter"
+        class="p-button-success"
+        (click)="applyFilters()"
+    ></button>
+    <button
+      pButton
+      label="Resetează filtre"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="resetFilters()"
+    ></button>
+  </form>
+</div>
+
+<p-table
+  [value]="reservations"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[5,10,20]"
+  [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Data</th>
+      <th>Ora</th>
+      <th>Durata</th>
+      <th>Masa</th>
+      <th>Cameră</th>
+      <th>Email Client</th>
+      <th>Nr. Telefon Client</th>
+      <th>Acțiuni</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-reservation>
+    <tr>
+      <td>{{ reservation.date | date:'dd.MM.yyyy' }}</td>
+      <td>{{ reservation.startTime }}</td>
+      <td>{{ reservation.duration }}</td>
+      <td>{{ reservation.tableNr }}</td>
+      <td>{{ reservation.roomName }}</td>
+      <td>{{ reservation.clientEmail }}</td>
+      <td>{{ reservation.clientPhoneNumber }}</td>
+      <td>
+        <button class="btn-cancel" (click)="openConfirmDialog(reservation.id)">Anulează</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<div *ngIf="showConfirm" class="confirm-dialog-backdrop">
+  <div class="confirm-dialog">
+    <p>Ești sigur că vrei să anulezi această rezervare?</p>
+    <div class="dialog-buttons">
+      <button class="btn-confirm" (click)="confirmCancel()">Da</button>
+      <button class="btn-cancel-dialog" (click)="closeConfirmDialog()">Nu</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="dropdown-container">
+  <p-dropdown 
+    class="styled-dropdown"
+    [options]="roomNames" 
+    [(ngModel)]="selectedRoomName" 
+    (onChange)="onRoomChange()"
+    placeholder="Selectează camera">
+  </p-dropdown>
+
+  <button type="button" (click)="showPopup()" class="btn btn-primary">
+    Adaugă cameră nouă
+  </button>
+</div>
+
+<div *ngIf="isRoomLoaded">
+  <app-restaurant-map [roomId]="room.id"></app-restaurant-map>
+</div>
+
+<div class="popup-backdrop" *ngIf="isPopupVisible">
+  <div class="popup">
+    <h3>Adaugă cameră nouă</h3>
+    <input [(ngModel)]="newRoomName" placeholder="Numele camerei" class="popup-input" />
+
+    <div class="popup-buttons">
+      <button class="btn btn-secondary" (click)="cancelPopup()">Anulează</button>
+      <button class="btn btn-success" (click)="confirmAddRoom()">Adaugă</button>
+    </div>
+  </div>
+</div>

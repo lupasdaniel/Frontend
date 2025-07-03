@@ -1,0 +1,46 @@
+<div class="p-grid">
+  <div class="p-col-12 p-md-3">
+    <p-panel header="Filtru">
+      <div class="p-fluid">
+        <p-multiSelect
+          [options]="categoryOptions"
+          [(ngModel)]="selectedCategories"
+          optionLabel="name"
+          placeholder="Categorii"
+          class="p-mb-2">
+        </p-multiSelect>
+
+        <p-multiSelect
+          [options]="allergens"
+          [(ngModel)]="selectedAllergens"
+          optionLabel="name"
+          placeholder="Alergeni">
+        </p-multiSelect>
+      </div>
+    </p-panel>
+  </div>
+
+  <div class="p-col-12 p-md-9">
+    <div *ngFor="let category of filteredCategories">
+      <h2>{{ category.name }}</h2>
+      <div class="p-grid">
+        <div
+          class="p-col-12 p-md-4"
+          *ngFor="let food of filteredFoodsByCategory(category.id)">
+          <p-card [header]="food.name">
+            <ng-template pTemplate="content">
+              <p><strong>Timp preparare:</strong> {{ food.toTime || '-' }}</p>
+              <div class="p-mt-2">
+                <span *ngFor="let allergen of food.foodAllergens" class="p-mr-2">
+                  <i [ngClass]="getAllergenIcon(allergen.allergen.name)"
+                     [title]="allergen.allergen.name"
+                     class="pi pi-fw"></i>
+                </span>
+              </div>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

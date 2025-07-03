@@ -1,0 +1,134 @@
+.room-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 500px;
+  background-color: white;
+  overflow: hidden;
+  margin: 60px auto 0 auto;
+  border-radius: 16px;
+  border: 2px solid #b0b0b0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.room-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  object-fit: cover;
+}
+
+.table {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid white;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+
+.table.available {
+  background-color: #90ee90;
+}
+
+.table.reserved {
+  background-color: #ff4d4d;
+}
+
+.table:hover {
+  transform: scale(1.1);
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  margin: 40px 0 0 60px;
+}
+
+.custom-btn-save,
+.custom-btn-edit {
+  background-color: transparent;
+  border-radius: 12px;
+  border: 2px solid;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-btn-save {
+  border-color: #90cdf4;
+  color: #0077b6;
+}
+
+.custom-btn-save:hover {
+  background-color: #e0f2fe;
+}
+
+.custom-btn-edit {
+  border-color: #fbb6ce;
+  color: #b0005b;
+}
+
+.custom-btn-edit:hover {
+  background-color: #ffe0eb;
+}
+
+.right-filters {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.datepicker-filter{
+  border: 1px solid #aaa !important;       
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem;    
+  height: 2.5rem;                     
+  border-radius: 6px;            
+  box-shadow: none;
+  font-size: 0.95rem; 
+}
+
+  .error-message {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 1.0rem;
+  }
+
+  .popup-content {
+  font-size: 1rem;
+  padding: 0.5rem;
+  min-width: 160px;
+  text-align: center;
+}
+
+::ng-deep .custom-dialog.p-dialog {
+  border: 2px solid #f8c2dc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+::ng-deep .custom-dialog .p-dialog-content {
+  padding: 1rem;
+}
+
+::ng-deep .custom-dialog .p-dialog-header {
+  justify-content: center !important; 
+  padding-top: 20px !important;       
+  text-align: center;
+}
+
+::ng-deep .custom-dialog .p-dialog-title {
+  width: 100%;
+  text-align: center;
+}
