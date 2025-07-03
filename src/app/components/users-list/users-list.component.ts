@@ -9,7 +9,7 @@ import { UserDto } from '../../models/user.model';
 import { UserFilters } from '../../filters/user-filters.model';
 import { UpdateUserCommand } from '../../commands/user-commands.model';
 import { DialogModule } from 'primeng/dialog';
-import { NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 
@@ -24,7 +24,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ReactiveFormsModule,
     FloatLabelModule,
     DialogModule,
-    NgIf,
+    NgClass,
     ButtonModule,
     DropdownModule
   ],
@@ -65,7 +65,7 @@ export class UsersListComponent implements OnInit {
       this.editDialogVisible = true;
     }
   }
-    
+
   resetFilters(): void{
     this.filters = new UserFilters();
     this.loadUsers();

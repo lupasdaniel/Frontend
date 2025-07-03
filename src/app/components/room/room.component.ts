@@ -1,15 +1,17 @@
-import { Component } from '@angular/core'; 
+import { Component } from '@angular/core';
 import { RestaurantMapComponent } from '../restaurant-map/restaurant-map.component';
 import { RoomService } from '../../services/room.service';
 import { RoomDto } from '../../models/room.model';
 import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [RestaurantMapComponent, DropdownModule, CommonModule, FormsModule],
+  imports: [RestaurantMapComponent, DropdownModule, ButtonModule, InputTextModule, CommonModule, FormsModule],
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']
 })

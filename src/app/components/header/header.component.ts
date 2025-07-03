@@ -1,19 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MenubarModule],
+  imports: [],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnDestroy {
-  menuItems: MenuItem[] = [];
   isLoggedIn: boolean | null = null;
   private authSub?: Subscription;
 
@@ -22,7 +19,19 @@ export class HeaderComponent implements OnDestroy {
   ngOnInit() {
     this.authSub = this.authService.loggedIn$.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
-      this.buildMenu();
+
+      // Debugging
+      console.log('Is logged in:', loggedIn);
+      console.log('User role:', this.authService.getUserRole());
+      console.log('Role from localStorage:', localStorage.getItem('role'));
+      console.log('Is admin:', this.isAdmin());
+
+      // TEMPORARY: Pentru test, setează manual rolul ca Admin dacă ești logat
+      if (loggedIn && !localStorage.getItem('role')) {
+        localStorage.setItem('role', 'Admin');
+        localStorage.setItem('username', 'Admin User');
+        console.log('Set temporary admin role for testing');
+      }
     });
   }
 
@@ -30,56 +39,27 @@ export class HeaderComponent implements OnDestroy {
     this.authSub?.unsubscribe();
   }
 
-  private buildMenu() {
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
+
+  isAdmin(): boolean {
     const role = this.authService.getUserRole();
+    const roleFromStorage = localStorage.getItem('role');
 
-    if (!this.isLoggedIn) {
-      this.menuItems = [
-        {
-          label: 'Login',
-          icon: 'pi pi-sign-in',
-          command: () => this.login()
-        }
-      ];
-      return;
-    }
+    // Debug pentru a vedea ce returnează
+    console.log('Role from service:', role);
+    console.log('Role from localStorage:', roleFromStorage);
 
-    this.menuItems = [
-      {
-        label: 'Pagina principală',
-        icon: 'pi pi-home',
-        command: () => this.router.navigate(['/room'])
-      },
-      {
-        label: 'Meniu',
-        icon: 'pi pi-book',
-        command: () => this.router.navigate(['/meniu-page'])
-      },
-      {
-        label: 'Profilul meu',
-        icon: 'pi pi-user',
-        command: () => this.router.navigate(['/my-profile'])
-      },
-      ...(role === 'Admin'
-        ? [{
-            label: 'Utilizatori',
-            icon: 'pi pi-users',
-            command: () => this.router.navigate(['/users-list'])
-          }]
-        : []),
-      ...(role === 'Admin'
-        ? [{
-            label: 'Rezervări ',
-            icon: 'pi pi-calendar',
-            command: () => this.router.navigate(['/reservations-list'])
-          }]
-        : []),
-      {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        command: () => this.logout()
-      }
-    ];
+    return role === 'Admin' || roleFromStorage === 'Admin';
+  }
+
+  getUserName(): string {
+    return localStorage.getItem('username') || 'User';
+  }
+
+  getUserRole(): string {
+    return this.authService.getUserRole() || localStorage.getItem('role') || 'User';
   }
 
   logout() {

@@ -179,7 +179,34 @@ export class RestaurantMapComponent implements OnChanges {
   }
 
   enableEdit() {
-    this.editMode = true;
+    this.editMode = !this.editMode;
+  }
+
+  deleteTable(tableId: string, event: Event) {
+    event.stopPropagation(); // Prevent table selection when clicking delete
+
+    // Here you can implement the actual delete logic
+    // For now, we'll just log it and you can integrate it later
+    console.log('Delete table with ID:', tableId);
+
+    // Example of how you might want to implement it:
+    // this.tableService.deleteTable(tableId).subscribe({
+    //   next: () => {
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Success',
+    //       detail: 'Masa a fost ștearsă cu succes'
+    //     });
+    //     this.loadTables(); // Reload tables
+    //   },
+    //   error: (error) => {
+    //     this.messageService.add({
+    //       severity: 'error',
+    //       summary: 'Error',
+    //       detail: 'Eroare la ștergerea mesei'
+    //     });
+    //   }
+    // });
   }
 
   openTableDialog(table: TableDto) {

@@ -1,76 +1,552 @@
-.filter-container {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+.reservations-container {
+  min-height: 100vh;
+  background: white;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-.filter-flex {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
+.page-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-.filter-box {
-  border: 1px solid #ccc;
-  padding: 0.75rem;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-
-  label {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+  h1 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
-  :deep(.p-calendar),
-  input {
-    width: 100%;
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0 0;
   }
 }
 
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+// Filters Card
+.filters-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  position: sticky;
+  top: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+
+    h3 {
+      color: #ffffff;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+
+    .reset-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      }
+    }
+  }
+
+  .filter-group {
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      color: #ffffff;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  .filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    button {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &.apply-btn {
+        background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+        color: white;
+        box-shadow: 0 4px 15px rgba(86, 171, 47, 0.3);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+        }
+      }
+    }
+  }
+}
+
+// Reservations Table Card
+.table-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    h3 {
+      color: #333;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        font-size: 1.1rem;
+        color: #667eea;
+      }
+    }
+
+    .reservations-count {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Reservations Grid
+.reservations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reservation-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(31, 38, 135, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(31, 38, 135, 0.25);
+  }
+
+  .reservation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    .reservation-date {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .reservation-time {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+  }
+
+  .reservation-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    .detail-item {
+      background: rgba(102, 126, 234, 0.05);
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(102, 126, 234, 0.1);
+
+      .detail-label {
+        color: #666;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+      }
+
+      .detail-value {
+        color: #333;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .client-info {
+    background: rgba(102, 126, 234, 0.05);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+
+    .client-header {
+      color: #667eea;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .client-details {
+      display: grid;
+      gap: 0.25rem;
+
+      .client-item {
+        color: #333;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          color: #667eea;
+          width: 14px;
+        }
+      }
+    }
+  }
+
+  .reservation-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    .cancel-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      }
+    }
+  }
+
+  .specifications {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    padding: 0.75rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+
+    .spec-label {
+      color: #ff8f00;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .spec-text {
+      color: #333;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+  }
+}
+
+.no-reservations {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+  i {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+// Confirm Dialog
 .confirm-dialog-backdrop {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex; align-items: center; justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
 .confirm-dialog {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
   padding: 2rem;
-  border-radius: 8px;
   text-align: center;
+  box-shadow: 0 20px 60px rgba(31, 38, 135, 0.5);
+  max-width: 400px;
+  width: 90%;
+
+  p {
+    color: #333;
+    font-size: 1.1rem;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.4;
+  }
+
+  .dialog-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.btn-confirm {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+      }
+
+      &.btn-cancel-dialog {
+        background: #f8f9fa;
+        color: #6c757d;
+        border: 2px solid #e9ecef;
+
+        &:hover {
+          background: #e9ecef;
+          color: #495057;
+        }
+      }
+    }
+  }
 }
 
-.dialog-buttons {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-around;
+// Custom PrimeNG Overrides
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-datepicker {
+  .p-inputtext {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    &:focus {
+      outline: none !important;
+      border-color: rgba(255, 255, 255, 0.5) !important;
+      background: rgba(255, 255, 255, 0.15) !important;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2) !important;
+    }
+  }
+
+  .p-button {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3) !important;
+    }
+  }
 }
 
-.btn-confirm, .btn-cancel-dialog {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
+:host ::ng-deep .p-datepicker-panel,
+:host ::ng-deep .p-calendar-panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 20px 60px rgba(31, 38, 135, 0.5) !important;
 }
 
-.btn-confirm {
-  background-color: #e74c3c;
-  color: white;
-}
+// Responsive Design
+@media (max-width: 768px) {
+  .reservations-container {
+    padding: 1rem;
+  }
 
-.btn-cancel-dialog {
-  background-color: #bdc3c7;
-  color: black;
-}
+  .page-header {
+    padding: 1.5rem;
 
-.btn-cancel {
-  background-color: #e74c3c;
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  .filters-card {
+    position: static;
+  }
+
+  .reservation-card {
+    padding: 1rem;
+
+    .reservation-details {
+      grid-template-columns: 1fr;
+    }
+  }
 }

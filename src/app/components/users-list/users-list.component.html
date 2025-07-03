@@ -1,106 +1,275 @@
 <div class="users-list-container">
-  <h2>Utilizatori</h2>
-
-  <div class="filter-container">
-    <form class="filter-form filter-flex" (ngSubmit)="$event.preventDefault()">
-      <div class="filter-box">
-        <input id="filterName" type="text" pInputText [(ngModel)]="filters.userName" name="filterName" placeholder="Nume utilizator" />
-      </div>
-      <div class="filter-box">
-        <input id="filterEmail" type="text" pInputText [(ngModel)]="filters.email" name="filterEmail" placeholder="Email" />
-      </div>
-      <div class="filter-box">
-        <label for="filterActive">Activ:</label>
-        <p-checkbox [(ngModel)]="filters.isActiv" binary="true" name="filterActive" inputId="filterActive" ></p-checkbox>
-      </div>
-      <div class="filter-box">
-      <p-dropdown
-          [options]="roles"
-          [(ngModel)]="filters!.role"
-          name="role"
-          placeholder="Selectează rolul"
-        >
-      </p-dropdown>
-    </div>
-    <div class="apply-filter-btn mt-3">
-      <button
-        pButton
-        label="Aplică filtre"
-        icon="pi pi-filter"
-        class="p-button-success"
-        (click)="loadUsers()"
-      ></button>
-      <button
-        pButton
-        label="Resetează filtre"
-        icon="pi pi-times"
-        class="p-button-secondary"
-        (click)="resetFilters()"
-      ></button>
-    </div>
-    </form>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>
+      <i class="pi pi-users"></i>
+      Gestionare utilizatori
+    </h1>
+    <p>Administrează conturile utilizatorilor din sistem</p>
   </div>
 
-  <p-table [value]="users" [paginator]="true" [rows]="5" [responsive]="true">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Nume complet</th>
-        <th>Nume utilizator</th>
-        <th>Email</th>
-        <th>Număr de telefon</th>
-        <th>Rol</th>
-        <th>Activ</th>
-        <th>Acțiuni</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-      <tr>
-        <td>{{ user.fullName }}</td>
-        <td>{{ user.userName }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.phoneNumber }}</td>
-        <td>{{ user.role }}</td>
-        <td>{{ user.isActive ? 'Activ' : 'Inactiv' }}</td>
-        <td>
-          <button class="btn-cancel" (click)="editUserInit(user.id)">Editează</button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+  <div class="content-wrapper">
+    <!-- Filters Card -->
+    <div class="filters-card">
+      <div class="filters-header">
+        <h3>
+          <i class="pi pi-filter"></i>
+          Filtre
+        </h3>
+        <button
+          type="button"
+          class="reset-btn"
+          (click)="resetFilters()"
+          title="Resetează toate filtrele">
+          <i class="pi pi-refresh"></i>
+          Reset
+        </button>
+      </div>
 
-<p-dialog header="Editează utilizator" [(visible)]="editDialogVisible" [modal]="true" [style]="{ width: '400px' }" [closable]="false">
-  <div *ngIf="editUser">
-    <div class="p-fluid">
-      <div class="p-field">
-        <label for="firstName">Prenume</label>
-        <input id="firstName" pInputText [(ngModel)]="editUser!.firstName" name="firstName" />
+      <div class="filter-group">
+        <label for="filterName">
+          <i class="pi pi-user"></i>
+          Nume utilizator
+        </label>
+        <input
+          id="filterName"
+          type="text"
+          [(ngModel)]="filters.userName"
+          name="filterName"
+          placeholder="Caută după nume utilizator"
+          class="search-input"
+          (input)="loadUsers()"
+        />
       </div>
-      <div class="p-field">
-        <label for="lastName">Nume</label>
-        <input id="lastName" pInputText [(ngModel)]="editUser!.lastName" name="lastName" />
+
+      <div class="filter-group">
+        <label for="filterEmail">
+          <i class="pi pi-envelope"></i>
+          Email
+        </label>
+        <input
+          id="filterEmail"
+          type="text"
+          [(ngModel)]="filters.email"
+          name="filterEmail"
+          placeholder="Caută după email"
+          class="search-input"
+          (input)="loadUsers()"
+        />
       </div>
-      <div class="p-field">
-        <label for="phoneNumber">Număr de telefon</label>
-        <input id="phoneNumber" pInputText [(ngModel)]="editUser!.phoneNumber" name="phoneNumber" />
-      </div>
-      <div class="p-field">
-        <label for="role">Rol</label>
+
+      <div class="filter-group">
+        <label for="filterRole">
+          <i class="pi pi-shield"></i>
+          Rol
+        </label>
         <p-dropdown
           [options]="roles"
-          [(ngModel)]="editUser!.role"
+          [(ngModel)]="filters.role"
           name="role"
-          placeholder="Selectează rolul"
-        >
+          placeholder="Toate rolurile"
+          [showClear]="true"
+          (onChange)="loadUsers()">
         </p-dropdown>
+      </div>
+
+      <div class="filter-group">
+        <label>
+          <i class="pi pi-check-circle"></i>
+          Stare cont
+        </label>
+        <div class="checkbox-group">
+          <label class="custom-checkbox">
+            <input
+              type="checkbox"
+              [(ngModel)]="filters.isActiv"
+              name="filterActive"
+              (change)="loadUsers()"
+            />
+            Doar utilizatori activi
+          </label>
+        </div>
       </div>
     </div>
 
-    <div class="p-dialog-footer" style="text-align: right; margin-top: 1rem;">
-      <button pButton type="button" label="Salvează" class="p-button-success" (click)="saveEditedUser()"
-        [disabled]="!editUser!.firstName || !editUser!.lastName || !editUser!.phoneNumber"></button>
-      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="editDialogVisible = false"></button>
-    </div>
+    <!-- Users Grid -->
+    @if (users.length === 0) {
+      <div class="no-users">
+        <i class="pi pi-users"></i>
+        <h3>Nu există utilizatori</h3>
+        <p>Nu s-au găsit utilizatori care să corespundă filtrelor aplicate.</p>
+      </div>
+    } @else {
+      <div class="users-grid">
+        @for (user of users; track user.id) {
+          <div class="user-card">
+            <div class="user-header">
+              <div class="user-avatar">
+                {{ user.firstName.charAt(0) || 'U' }}{{ user.lastName.charAt(0) || '' }}
+              </div>
+              <div class="user-status">
+                <div class="status-badges">
+                  <span
+                    class="status-badge"
+                    [class.role-admin]="user.role === 'Admin'"
+                    [class.role-manager]="user.role === 'Manager'"
+                    [class.role-client]="user.role === 'Client'">
+                    {{ user.role }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="user-name">{{ user.fullName }}</h3>
+            <p class="user-email">{{ user.email }}</p>
+
+            <div class="user-details">
+              <div class="detail-item">
+                <div class="detail-label">Username</div>
+                <div class="detail-value">{{ user.userName }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Telefon</div>
+                <div class="detail-value">{{ user.phoneNumber || 'N/A' }}</div>
+              </div>
+            </div>
+
+            <div class="status-badges">
+              <span
+                class="status-badge"
+                [class.status-active]="user.isActive"
+                [class.status-inactive]="!user.isActive">
+                {{ user.isActive ? 'Activ' : 'Inactiv' }}
+              </span>
+              <span
+                class="status-badge"
+                [class.email-confirmed]="user.isEmailConfirmed"
+                [class.email-unconfirmed]="!user.isEmailConfirmed">
+                {{ user.isEmailConfirmed ? 'Email confirmat' : 'Email neconfirmat' }}
+              </span>
+            </div>
+
+            <div class="user-actions">
+              <button
+                class="edit-btn"
+                (click)="editUserInit(user.id)"
+                title="Editează utilizatorul">
+                <i class="pi pi-pencil"></i>
+                Editează
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
   </div>
+</div>
+
+<!-- Edit User Dialog -->
+<p-dialog
+  [(visible)]="editDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '600px' }"
+  header="Editează utilizatorul">
+
+  @if (editUser) {
+    <div class="edit-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Prenume *</label>
+          <input
+            id="firstName"
+            type="text"
+            [(ngModel)]="editUser.firstName"
+            name="firstName"
+            placeholder="Introdu prenumele"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nume *</label>
+          <input
+            id="lastName"
+            type="text"
+            [(ngModel)]="editUser.lastName"
+            name="lastName"
+            placeholder="Introdu numele"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="userName">Username *</label>
+          <input
+            id="userName"
+            type="text"
+            [(ngModel)]="editUser.userName"
+            name="userName"
+            placeholder="Introdu username-ul"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="editUser.email"
+            name="email"
+            placeholder="Introdu email-ul"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phoneNumber">Număr de telefon</label>
+          <input
+            id="phoneNumber"
+            type="tel"
+            [(ngModel)]="editUser.phoneNumber"
+            name="phoneNumber"
+            placeholder="Introdu numărul de telefon"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="editRole">Rol *</label>
+          <p-dropdown
+            [options]="roles"
+            [(ngModel)]="editUser.role"
+            name="role"
+            placeholder="Selectează rolul"
+            optionLabel="label"
+            optionValue="value">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="editDialogVisible = false">
+        <i class="pi pi-times"></i>
+        Anulează
+      </button>
+      <button
+        type="button"
+        class="save-btn"
+        (click)="saveEditedUser()"
+        [disabled]="!editUser.firstName || !editUser.lastName || !editUser.userName || !editUser.email">
+        <i class="pi pi-check"></i>
+        Salvează
+      </button>
+    </div>
+  }
 </p-dialog>
 

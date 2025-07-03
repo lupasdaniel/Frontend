@@ -1,5 +1,93 @@
-<p-menubar [model]="menuItems">
-  <ng-template pTemplate="start">
-    <span class="app-title">Book your table</span>
-  </ng-template>
-</p-menubar>
+<div class="modern-header">
+  <!-- Branding Section -->
+  <div class="app-branding">
+    <div class="brand-icon">
+      <i class="pi pi-calendar"></i>
+    </div>
+    <div class="brand-content">
+      <span class="app-title">BookYourTable</span>
+      <span class="app-subtitle">Restaurant Management</span>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  @if (isLoggedIn) {
+    <nav class="main-navigation">
+      <button
+        class="nav-btn nav-btn-home"
+        (click)="navigateTo('/room')"
+        title="Pagina principală"
+      >
+        <i class="pi pi-home"></i>
+        <span>Acasă</span>
+      </button>
+
+      <button
+        class="nav-btn nav-btn-menu"
+        (click)="navigateTo('/meniu-page')"
+        title="Meniu restaurant"
+      >
+        <i class="pi pi-book"></i>
+        <span>Meniu</span>
+      </button>
+
+      <button
+        class="nav-btn nav-btn-profile"
+        (click)="navigateTo('/my-profile')"
+        title="Profilul meu"
+      >
+        <i class="pi pi-user"></i>
+        <span>Profil</span>
+      </button>
+
+      @if (isAdmin()) {
+        <button
+          class="nav-btn nav-btn-users"
+          (click)="navigateTo('/users-list')"
+          title="Gestionare utilizatori"
+        >
+          <i class="pi pi-users"></i>
+          <span>Utilizatori</span>
+        </button>
+
+        <button
+          class="nav-btn nav-btn-reservations"
+          (click)="navigateTo('/reservations-list')"
+          title="Gestionare rezervări"
+        >
+          <i class="pi pi-calendar"></i>
+          <span>Rezervări</span>
+        </button>
+      }
+    </nav>
+  }
+
+  <!-- User Actions -->
+  <div class="header-actions">
+    @if (!isLoggedIn) {
+      <button
+        class="login-btn"
+        (click)="login()"
+        title="Autentificare"
+      >
+        <i class="pi pi-sign-in"></i>
+        <span>Autentificare</span>
+      </button>
+    }
+
+    @if (isLoggedIn) {
+      <div class="user-profile">
+        <div class="user-avatar">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="user-info">
+          <span class="user-name">{{ getUserName() }}</span>
+          <span class="user-role">{{ getUserRole() }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()" title="Deconectare">
+          <i class="pi pi-sign-out"></i>
+        </button>
+      </div>
+    }
+  </div>
+</div>

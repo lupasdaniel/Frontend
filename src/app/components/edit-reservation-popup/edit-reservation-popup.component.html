@@ -1,28 +1,100 @@
-<p-dialog header="Rezervare Masă" [(visible)]="visible" [modal]="true" [closable]="true" (onHide)="close.emit()">
-  <p>Rezervi masa {{ table.tableNumber }} pentru data de {{ formatDate(reservationDate) }} și ora de {{ formatTime(reservationHour) }}?</p>
-  
-  <div class="fields-inline">
-    <div class="field">
-      <label for="nrOfPersons" class="custom-label">Nr pers.</label>
-      <p-dropdown 
-        [options]="nrOfPersonsOptions" 
-        [(ngModel)]="nrOfPersons" 
-        inputId="nrOfPersons"
-        class="custom-dropdown"
-        [showClear]="false">
-      </p-dropdown>
-
+<p-dialog
+  header="🍽️ Rezervare Masă"
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  (onHide)="close.emit()"
+  styleClass="custom-reservation-dialog"
+>
+  <div class="reservation-content">
+    <!-- Table Info Section -->
+    <div class="table-info-card">
+      <div class="table-icon">
+        <i class="pi pi-circle-fill"></i>
+        <span class="table-number">{{ table.tableNumber }}</span>
+      </div>
+      <div class="reservation-details">
+        <h3>Detalii Rezervare</h3>
+        <div class="detail-item">
+          <i class="pi pi-calendar"></i>
+          <span>{{ formatDate(reservationDate) }}</span>
+        </div>
+        <div class="detail-item">
+          <i class="pi pi-clock"></i>
+          <span>{{ formatTime(reservationHour) }}</span>
+        </div>
+      </div>
     </div>
-    
-    <div class="field">
-      <label for="duration" class="custom-label">Durata</label>
-      <input type="text" [value]="duration" readonly id="duration" class="custom-input" />
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="nrOfPersons" class="field-label">
+            <i class="pi pi-users"></i>
+            Numărul de persoane
+          </label>
+          <p-dropdown
+            [options]="nrOfPersonsOptions"
+            [(ngModel)]="nrOfPersons"
+            inputId="nrOfPersons"
+            styleClass="custom-dropdown"
+            [showClear]="false"
+            placeholder="Selectează"
+          ></p-dropdown>
+        </div>
+
+        <div class="form-field">
+          <label for="duration" class="field-label">
+            <i class="pi pi-stopwatch"></i>
+            Durata rezervării
+          </label>
+          <div class="duration-display">
+            <input
+              type="text"
+              [value]="duration"
+              readonly
+              id="duration"
+              class="duration-input"
+            />
+            <span class="duration-suffix">ore</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="reservation-summary">
+      <div class="summary-title">
+        <i class="pi pi-check-circle"></i>
+        Confirmare Rezervare
+      </div>
+      <p class="summary-text">
+        Vei rezerva <strong>masa {{ table.tableNumber }}</strong>
+        pentru <strong>{{ nrOfPersons || '?' }} {{ nrOfPersons === 1 ? 'persoană' : 'persoane' }}</strong>
+        în data de <strong>{{ formatDate(reservationDate) }}</strong>
+        la ora <strong>{{ formatTime(reservationHour) }}</strong>.
+      </p>
     </div>
   </div>
 
-  <div class="button-group">
-    <button pButton label="Anulează" class="p-button-secondary custom-button" (click)="onCancel()"></button>
-    <button pButton label="Rezervă" class="p-button-success custom-button" (click)="onReserve()" [disabled]="!nrOfPersons"></button>
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button
+      pButton
+      label="Anulează"
+      icon="pi pi-times"
+      class="cancel-btn"
+      (click)="onCancel()"
+    ></button>
+    <button
+      pButton
+      label="Confirmă Rezervarea"
+      icon="pi pi-check"
+      class="confirm-btn"
+      (click)="onReserve()"
+      [disabled]="!nrOfPersons"
+    ></button>
   </div>
 </p-dialog>
 

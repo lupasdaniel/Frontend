@@ -1,23 +1,427 @@
-.dropdown-container {
+// Room Header Styles
+.room-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1.5rem auto;
+  max-width: 1200px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.room-controls {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 20px auto;
-  max-width: 600px;
+  align-items: end;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
-.styled-dropdown {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  background-color: #f9f9f9;
-  transition: box-shadow 0.3s ease;
+.dropdown-wrapper {
+  flex: 1;
+  min-width: 300px;
+
+  .control-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+
+    .pi {
+      margin-right: 0.5rem;
+      color: #6366f1;
+    }
+  }
 }
 
-.styled-dropdown:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+// Enhanced Room Dropdown Styles
+:host ::ng-deep .room-dropdown {
+  width: 100%;
+
+  .p-dropdown {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-height: 56px !important;
+    position: relative !important;
+    overflow: hidden !important;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      border-color: #667eea;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+      transform: translateY(-2px);
+
+      &::before {
+        transform: scaleX(1);
+      }
+    }
+
+    &.p-focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+
+      &::before {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  .p-dropdown-trigger {
+    color: #667eea;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .p-dropdown-trigger-icon {
+      font-size: 1.1rem;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .p-dropdown.p-dropdown-open .p-dropdown-trigger .p-dropdown-trigger-icon {
+    transform: rotate(180deg);
+  }
+
+  .p-dropdown-label {
+    padding: 1rem 1.25rem;
+    font-weight: 500;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }
+
+  .p-dropdown-clear-icon {
+    color: #9ca3af;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+// Dropdown Panel Styling
+:host ::ng-deep .p-dropdown-panel {
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.15) !important;
+  background: white !important;
+  margin-top: 8px !important;
+  overflow: hidden !important;
+  max-width: 400px !important;
+  min-width: 350px !important;
+  backdrop-filter: blur(10px) !important;
+
+  .p-dropdown-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 1rem !important;
+
+    .p-dropdown-filter-container {
+      .p-dropdown-filter {
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+        transition: all 0.3s ease !important;
+        background: white !important;
+        width: 100% !important;
+
+        &:focus {
+          border-color: #667eea !important;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+          outline: none !important;
+        }
+      }
+
+      .p-dropdown-filter-icon {
+        color: #667eea !important;
+        right: 1rem !important;
+      }
+    }
+  }
+
+  .p-dropdown-items-wrapper {
+    max-height: 300px !important;
+    background: white !important;
+  }
+
+  .p-dropdown-items {
+    padding: 0.5rem !important;
+    background: white !important;
+
+    .p-dropdown-item {
+      border-radius: 12px !important;
+      margin-bottom: 4px !important;
+      padding: 0 !important;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      border: 1px solid transparent !important;
+      background: white !important;
+
+      &:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        transform: translateX(4px) scale(1.02) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+
+        .room-icon i {
+          color: #fbbf24 !important;
+          transform: scale(1.1) !important;
+        }
+
+        .room-status i {
+          color: #10b981 !important;
+        }
+
+        .room-number {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+      }
+
+      &.p-highlight {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        color: white !important;
+        transform: translateX(4px) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+
+        .room-icon i {
+          color: #fde047 !important;
+        }
+
+        .room-status i {
+          color: #fbbf24 !important;
+        }
+      }
+    }
+  }
+
+  .p-dropdown-footer {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
+
+// Force dropdown panel background - stronger override
+:host ::ng-deep .p-dropdown-panel,
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper,
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background: #ffffff !important;
+}
+
+// Force all dropdown elements to have solid background
+:host ::ng-deep .p-dropdown-panel * {
+  background-color: transparent;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header,
+:host ::ng-deep .p-dropdown-panel .p-dropdown-footer {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  background-color: #f8fafc !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+// Global override for dropdown panels - most aggressive approach
+.p-dropdown-panel {
+  background: white !important;
+  background-color: white !important;
+  background-image: none !important;
+}
+
+.p-dropdown-panel .p-dropdown-items-wrapper {
+  background: white !important;
+  background-color: white !important;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  background: white !important;
+  background-color: white !important;
+}
+
+.p-dropdown-panel .p-dropdown-header {
+  background: #f8fafc !important;
+  background-color: #f8fafc !important;
+}
+
+.p-dropdown-panel .p-dropdown-footer {
+  background: #f8fafc !important;
+  background-color: #f8fafc !important;
+}
+
+.p-dropdown-panel .p-dropdown-item {
+  background: white !important;
+  background-color: white !important;
+}
+
+.p-dropdown-panel .p-dropdown-item:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background-color: #667eea !important;
+}
+
+// Selected Room Item Styling
+.selected-room-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.25rem 0;
+
+  .room-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  .room-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .room-name {
+      font-weight: 600;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .room-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+  }
+}
+
+// Dropdown Room Item Styling
+.dropdown-room-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+
+  .room-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+
+    i {
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+  }
+
+  .room-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .room-name {
+      font-weight: 600;
+      color: #1f2937;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .room-number {
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+  }
+
+  .room-status {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 1rem;
+      color: #10b981;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+// Dropdown Footer Styling
+.dropdown-footer {
+  text-align: center;
+
+  small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-weight: 500;
+
+    i {
+      color: #3b82f6;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Add Room Button Styles
+.add-room-btn {
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.2) !important;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3) !important;
+  }
+
+  .pi {
+    font-size: 1rem;
+  }
 }
 
 button.btn {

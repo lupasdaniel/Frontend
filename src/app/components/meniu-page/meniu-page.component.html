@@ -1,45 +1,118 @@
-<div class="p-grid">
-  <div class="p-col-12 p-md-3">
-    <p-panel header="Filtru">
-      <div class="p-fluid">
-        <p-multiSelect
-          [options]="categoryOptions"
-          [(ngModel)]="selectedCategories"
-          optionLabel="name"
-          placeholder="Categorii"
-          class="p-mb-2">
-        </p-multiSelect>
-
-        <p-multiSelect
-          [options]="allergens"
-          [(ngModel)]="selectedAllergens"
-          optionLabel="name"
-          placeholder="Alergeni">
-        </p-multiSelect>
+<div class="menu-container">
+  <!-- Menu Header -->
+  <div class="menu-header">
+    <div class="header-content">
+      <div class="menu-icon">
+        <i class="pi pi-book"></i>
       </div>
-    </p-panel>
+      <div class="menu-info">
+        <h1 class="menu-title">
+          <i class="pi pi-bookmark"></i>
+          Meniul nostru
+        </h1>
+        <p class="menu-subtitle">Descoperă deliciosele noastre preparate</p>
+      </div>
+    </div>
   </div>
 
-  <div class="p-col-12 p-md-9">
-    <div *ngFor="let category of filteredCategories">
-      <h2>{{ category.name }}</h2>
-      <div class="p-grid">
-        <div
-          class="p-col-12 p-md-4"
-          *ngFor="let food of filteredFoodsByCategory(category.id)">
-          <p-card [header]="food.name">
-            <ng-template pTemplate="content">
-              <p><strong>Timp preparare:</strong> {{ food.toTime || '-' }}</p>
-              <div class="p-mt-2">
-                <span *ngFor="let allergen of food.foodAllergens" class="p-mr-2">
-                  <i [ngClass]="getAllergenIcon(allergen.allergen.name)"
-                     [title]="allergen.allergen.name"
-                     class="pi pi-fw"></i>
-                </span>
-              </div>
-            </ng-template>
-          </p-card>
+  <div class="menu-content">
+    <!-- Filters Sidebar -->
+    <div class="filters-sidebar">
+      <div class="filters-card">
+        <div class="card-header">
+          <h3>
+            <i class="pi pi-filter"></i>
+            Filtrează meniul
+          </h3>
         </div>
+
+        <div class="filters-content">
+          <div class="filter-group">
+            <label>
+              <i class="pi pi-tags"></i>
+              Categorii
+            </label>
+            <p-multiSelect
+              [options]="categoryOptions"
+              [(ngModel)]="selectedCategories"
+              optionLabel="name"
+              placeholder="Selectează categorii"
+              [showClear]="true"
+              class="custom-multiselect">
+            </p-multiSelect>
+          </div>
+
+          <div class="filter-group">
+            <label>
+              <i class="pi pi-exclamation-triangle"></i>
+              Alergeni
+            </label>
+            <p-multiSelect
+              [options]="allergens"
+              [(ngModel)]="selectedAllergens"
+              optionLabel="name"
+              placeholder="Selectează alergeni"
+              [showClear]="true"
+              class="custom-multiselect">
+            </p-multiSelect>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Categories -->
+    <div class="menu-categories">
+      <div *ngFor="let category of filteredCategories" class="category-section">
+        <div class="category-header">
+          <h2 class="category-title">
+            <i class="pi pi-circle-fill"></i>
+            {{ category.name }}
+          </h2>
+          <div class="category-count">
+            {{ filteredFoodsByCategory(category.id).length }} {{ filteredFoodsByCategory(category.id).length === 1 ? 'preparat' : 'preparate' }}
+          </div>
+        </div>
+
+        <div class="food-grid">
+          <div
+            *ngFor="let food of filteredFoodsByCategory(category.id)"
+            class="food-card">
+            <div class="food-card-header">
+              <h4 class="food-name">{{ food.name }}</h4>
+            </div>
+
+            <div class="food-card-content">
+              <div class="food-info">
+                <div class="prep-time" *ngIf="food.toTime">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ food.toTime }}</span>
+                </div>
+              </div>
+
+              <div class="allergens-section" *ngIf="food.foodAllergens && food.foodAllergens.length > 0">
+                <div class="allergens-label">
+                  <i class="pi pi-exclamation-triangle"></i>
+                  <span>Alergeni:</span>
+                </div>
+                <div class="allergens-list">
+                  <span
+                    *ngFor="let allergen of food.foodAllergens"
+                    class="allergen-tag"
+                    [title]="allergen.allergen.name">
+                    <i [ngClass]="getAllergenIcon(allergen.allergen.name)"></i>
+                    {{ allergen.allergen.name }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="filteredCategories.length === 0" class="no-results">
+        <i class="pi pi-search"></i>
+        <h3>Nu s-au găsit preparate</h3>
+        <p>Încearcă să modifici filtrele pentru a vedea mai multe opțiuni.</p>
       </div>
     </div>
   </div>

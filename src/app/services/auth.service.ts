@@ -20,7 +20,7 @@ interface RegisterResponse {
 })
 export class AuthService {
   private apiUrl = 'https://licenta2-eacbcjg8crgpd0ca.northeurope-01.azurewebsites.net/api/auth';
-  private tokenKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU5Y2FiNzY4LTYwYWEtNDcwNi1hMTZhLWM1YWJhMDk5ZWNiMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJQSSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InBhdGkuaWFuY3UwM0BnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc1MTQ5MDg5MiwiaXNzIjoiQm9va1lvdXJUYWJsZUFQSSIsImF1ZCI6IkJvb2tZb3VyVGFibGVDbGllbnQifQ.lSsgl4luLpeVTIgR_-CC3YpGfCnR8WIv_0cNdN7SA-Y';
+  private tokenKey = 'token'; // Folosește cheia corectă pentru token
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   public loggedIn$ = this.loggedIn.asObservable();
 
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem(this.tokenKey);
   }
 
   isLoggedIn(): boolean {

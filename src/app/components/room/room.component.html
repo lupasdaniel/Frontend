@@ -1,15 +1,71 @@
-<div class="dropdown-container">
-  <p-dropdown 
-    class="styled-dropdown"
-    [options]="roomNames" 
-    [(ngModel)]="selectedRoomName" 
-    (onChange)="onRoomChange()"
-    placeholder="Selectează camera">
-  </p-dropdown>
+<div class="room-header">
+  <div class="room-controls">
+    <div class="dropdown-wrapper">
+      <label class="control-label">
+        <i class="pi pi-home"></i>
+        Selectează camera
+      </label>
+      <p-dropdown
+        class="room-dropdown"
+        [options]="roomNames"
+        [(ngModel)]="selectedRoomName"
+        (onChange)="onRoomChange()"
+        placeholder="🏠 Alege o cameră din listă..."
+        [showClear]="true"
+        [filter]="true"
+        filterPlaceholder="🔍 Caută camera..."
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="50"
+        appendTo="body"
+        scrollHeight="300px">
 
-  <button type="button" (click)="showPopup()" class="btn btn-primary">
-    Adaugă cameră nouă
-  </button>
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+          <div class="selected-room-item">
+            <div class="room-icon">
+              <i class="pi pi-map-marker"></i>
+            </div>
+            <div class="room-info">
+              <span class="room-name">{{selectedOption}}</span>
+              <span class="room-label">Camera selectată</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="item" let-option let-index="index">
+          <div class="dropdown-room-item">
+            <div class="room-icon">
+              <i class="pi pi-map-marker"></i>
+            </div>
+            <div class="room-details">
+              <span class="room-name">{{option}}</span>
+              <span class="room-number">Camera #{{index + 1}}</span>
+            </div>
+            <div class="room-status">
+              <i class="pi pi-check-circle"></i>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <div class="dropdown-footer">
+            <small>
+              <i class="pi pi-info-circle"></i>
+              Total {{roomNames.length || 0}} camere disponibile
+            </small>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+
+    <button
+      type="button"
+      (click)="showPopup()"
+      class="p-button p-button-success p-button-raised add-room-btn"
+      pButton>
+      <i class="pi pi-plus"></i>
+      <span>Adaugă cameră nouă</span>
+    </button>
+  </div>
 </div>
 
 <div *ngIf="isRoomLoaded">
