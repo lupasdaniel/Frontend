@@ -24,7 +24,6 @@ import { DropdownModule } from 'primeng/dropdown';
     ReactiveFormsModule,
     FloatLabelModule,
     DialogModule,
-    NgClass,
     ButtonModule,
     DropdownModule
   ],
